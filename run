@@ -1,0 +1,32 @@
+#!/bin/bash
+#----------------------------------------------------
+# system parameters
+py=~/Applications/anaconda/bin/ipython
+
+# code parameters
+bc_bin=build_corpus
+cd_bin=classify_documents
+
+# number of features previously determined to be the number of features that maximises classification accuracy of the validation data set
+num_features=105		
+
+# random site selected from wikipedia
+url_to_test='https://en.wikipedia.org/wiki/Araeosoma_tessellatum'
+
+#----------------------------------------------------
+# build corpus and write to file
+$py ./src/$bc_bin.py
+
+#----------------------------------------------------
+# run sensivity analysis to determine optimal number of features in minimise error of cross validation set
+sensivity_analysis='true'
+$py ./src/$cd_bin.py $sensivity_analysis $num_features $url_to_test 
+
+#----------------------------------------------------
+# using optimal number of features classify a user prescribed website
+sensivity_analysis='false'
+$py ./src/$cd_bin.py $sensivity_analysis $num_features $url_to_test 
+
+#----------------------------------------------------
+# EOF
+#----------------------------------------------------
